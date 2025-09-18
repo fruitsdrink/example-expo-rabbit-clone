@@ -8,5 +8,7 @@ export default function ProtectedLayout() {
     return <Redirect href={"/sign-in"} />;
   }
 
-  return <Stack />;
+  return <Stack>
+    <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+  </Stack>
 }

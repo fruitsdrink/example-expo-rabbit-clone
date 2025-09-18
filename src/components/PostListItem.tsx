@@ -2,12 +2,15 @@ import { View, Text, Image, StyleSheet } from "react-native";
 import { formatDistanceToNowStrict } from "date-fns";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import React from "react";
+import { Link } from "expo-router";
 
 type Props = {
   post: Post;
+  isDetailedPost?: boolean;
 };
-export const PostListItem: React.FC<Props> = ({ post }) => {
+export const PostListItem: React.FC<Props> = ({ post, isDetailedPost }) => {
   return (
+    <Link href={`/post/${post.id}`}>
     <View
       style={{
         paddingHorizontal: 15,
@@ -89,6 +92,7 @@ export const PostListItem: React.FC<Props> = ({ post }) => {
         </View>
       </View>
     </View>
+    </Link>
   );
 };
 
