@@ -1,7 +1,14 @@
 import { useSignIn } from "@clerk/clerk-expo";
 import { Link, useRouter } from "expo-router";
-import { Text, TextInput, TouchableOpacity, View } from "react-native";
+import {
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
+  StyleSheet,
+} from "react-native";
 import React from "react";
+import { Button, Input } from "@/components";
 
 export default function Page() {
   const { signIn, setActive, isLoaded } = useSignIn();
@@ -39,28 +46,50 @@ export default function Page() {
   };
 
   return (
-    <View>
-      <Text>Sign in</Text>
-      <TextInput
-        autoCapitalize="none"
-        value={emailAddress}
+    <View style={styles.container}>
+      <Text style={styles.title}>Sign in</Text>
+      <Input
         placeholder="Enter email"
-        onChangeText={(emailAddress) => setEmailAddress(emailAddress)}
+        value={emailAddress}
+        onChangeText={(email) => setEmailAddress(email)}
       />
-      <TextInput
-        value={password}
+      <Input
         placeholder="Enter password"
-        secureTextEntry={true}
+        value={password}
         onChangeText={(password) => setPassword(password)}
+        secureTextEntry={true}
       />
-      <TouchableOpacity onPress={onSignInPress}>
-        <Text>Continue</Text>
-      </TouchableOpacity>
-      <View style={{ display: "flex", flexDirection: "row", gap: 3 }}>
-        <Link href="/sign-up">
-          <Text>Sign up</Text>
+      <Button text="Continue" onPress={onSignInPress} />
+      <View
+        style={{ display: "flex", flexDirection: "row", gap: 3, marginTop: 20 }}
+      >
+        <Text style={{ color: "gray" }}>Don't have an account?</Text>
+        <Link href="/sign-up" style={styles.link}>
+          <Text style={styles.linkText}>Sign up</Text>
         </Link>
       </View>
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    paddingHorizontal: 32,
+  },
+  title: {
+    fontSize: 24,
+    fontWeight: "bold",
+    marginBottom: 20,
+  },
+  link: {
+    textDecorationLine: "underline",
+  },
+  linkText: {
+    color: "#0d469b",
+    fontSize: 16,
+    fontWeight: "bold",
+  },
+});

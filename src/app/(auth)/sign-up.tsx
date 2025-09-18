@@ -1,13 +1,21 @@
 import * as React from "react";
-import { Text, TextInput, TouchableOpacity, View } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import { useSignUp } from "@clerk/clerk-expo";
 import { Link, useRouter } from "expo-router";
+import { Button, Input } from "@/components";
 
 export default function SignUpScreen() {
   const { isLoaded, signUp, setActive } = useSignUp();
   const router = useRouter();
 
   const [emailAddress, setEmailAddress] = React.useState("");
+  const [username, setUsername] = React.useState("");
   const [password, setPassword] = React.useState("");
   const [pendingVerification, setPendingVerification] = React.useState(false);
   const [code, setCode] = React.useState("");
@@ -20,6 +28,7 @@ export default function SignUpScreen() {
     try {
       await signUp.create({
         emailAddress,
+        username,
         password,
       });
 
@@ -80,31 +89,64 @@ export default function SignUpScreen() {
   }
 
   return (
-    <View>
+    <View style={styles.container}>
       <>
-        <Text>Sign up</Text>
-        <TextInput
-          autoCapitalize="none"
-          value={emailAddress}
+        <Text style={styles.title}>Sign up</Text>
+
+        <Input
           placeholder="Enter email"
+          value={emailAddress}
           onChangeText={(email) => setEmailAddress(email)}
         />
-        <TextInput
-          value={password}
-          placeholder="Enter password"
-          secureTextEntry={true}
-          onChangeText={(password) => setPassword(password)}
+        <Input
+          placeholder="Enter username"
+          value={username}
+          onChangeText={(username) => setUsername(username)}
         />
-        <TouchableOpacity onPress={onSignUpPress}>
-          <Text>Continue</Text>
-        </TouchableOpacity>
-        <View style={{ display: "flex", flexDirection: "row", gap: 3 }}>
+        <Input
+          placeholder="Enter password"
+          value={password}
+          onChangeText={(password) => setPassword(password)}
+          secureTextEntry={true}
+        />
+
+        <Button text="Continue" onPress={onSignUpPress} />
+        <View
+          style={{
+            display: "flex",
+            flexDirection: "row",
+            gap: 3,
+            marginTop: 20,
+          }}
+        >
           <Text>Already have an account?</Text>
-          <Link href="/sign-in" dismissTo>
-            <Text>Sign in</Text>
+          <Link href="/sign-in" dismissTo style={styles.link}>
+            <Text style={styles.linkText}>Sign in</Text>
           </Link>
         </View>
       </>
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    paddingHorizontal: 32,
+  },
+  title: {
+    fontSize: 24,
+    fontWeight: "bold",
+    marginBottom: 20,
+  },
+  link: {
+    textDecorationLine: "underline",
+  },
+  linkText: {
+    color: "#0d469b",
+    fontSize: 16,
+    fontWeight: "bold",
+  },
+});
